@@ -28,3 +28,41 @@ def create_comment(diary_id):
 
     return comment_schema.jsonify(new_comment), 201
 
+
+# Update comment
+@comment_routes.route('/comments/<int:comment_id>', methods=['PATCH'])
+@jwt_required()
+def update_comment(comment_id):
+    current_user = get_jwt_identity()
+    user_id = current_user['user_id']
+
+    comment = Comment.query.get(comment_id)
+
+    if comment.user_id != user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    data = request.get_json()
+    content = data.get('content')
+
+    comment.content = content
+    db.session.commit()
+
+    return comment_schema.jsonify(comment), 200
+
+# Delete comment
+@comment_routes.route('/comments/<int:comment_id>', methods=['DELETE'])
+@jwt_required()
+def delete_comment(comment_id):
+    current_user = get_jwt_identity()
+    user_id = current_user['user_id']
+
+    comment = Comment.query.get(comment_id)
+
+    if comment.user_id != user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    db.session.delete(comment)
+    db.session.commit()
+
+    return jsonify({"msg": "Comment deleted successfully"}), 200
+
