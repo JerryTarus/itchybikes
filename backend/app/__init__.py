@@ -32,7 +32,7 @@ def create_app(config_class=Config):
     from app.routes.comment_routes import comment_routes
     from app.routes.like_routes import like_routes
     from app.routes.follower_routes import follower_routes
-    from app.routes.auth_routes import auth_routes  # Include auth routes
+    from app.routes.auth_routes import auth_routes
 
     app.register_blueprint(user_routes)
     app.register_blueprint(diary_routes)
