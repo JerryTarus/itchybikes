@@ -6,11 +6,39 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy_serializer import FlaskSQLAlchemySerializer
-
+from flask_jwt_extended import JWTManager
 
 db = SQLAlchemy()
 migrate = Migrate()
 ma = Marshmallow()
 api = Api()
 serializer = FlaskSQLAlchemySerializer()
+jwt = JWTManager()
 
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+    CORS(app)
+    api.init_app(app)
+    serializer.init_app(app)
+    ma.init_app(app)
+    jwt.init_app(app)
+
+    from app.routes.user_routes import user_routes
+    from app.routes.diary_routes import diary_routes
+    from app.routes.comment_routes import comment_routes
+    from app.routes.like_routes import like_routes
+    from app.routes.follower_routes import follower_routes
+    from app.routes.auth_routes import auth_routes  # Include auth routes
+
+    app.register_blueprint(user_routes)
+    app.register_blueprint(diary_routes)
+    app.register_blueprint(comment_routes)
+    app.register_blueprint(like_routes)
+    app.register_blueprint(follower_routes)
+    app.register_blueprint(auth_routes)
+
+    return app
