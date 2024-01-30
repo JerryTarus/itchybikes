@@ -11,3 +11,14 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
+    diaries = db.relationship('Diary', backref='author', lazy=True)
+    comments = db.relationship('Comment', backref='author', lazy=True)
+    likes = db.relationship('Like', backref='author', lazy=True)
+    followers = db.relationship('Follower', back_populates='follower', lazy=True, cascade="all, delete-orphan")
+    following = db.relationship('Follower', back_populates='following', lazy=True, cascade="all, delete-orphan")
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
