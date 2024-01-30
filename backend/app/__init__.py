@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -41,4 +41,12 @@ def create_app(config_class=Config):
     app.register_blueprint(follower_routes)
     app.register_blueprint(auth_routes)
 
+
+    # Serve images during development
+    if app.config['ENV'] == 'development':
+        @app.route('/images/<path:filename>')
+        def serve_image(filename):
+            return send_from_directory(os.path.join(app.root_path, 'images'), filename)
+        
+        
     return app
