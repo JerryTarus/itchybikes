@@ -22,3 +22,41 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
+
+class Diary(db.Model):
+    diary_id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    summary = db.Column(db.Text, nullable=False)
+    photo_url = db.Column(db.String(200), nullable=True)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+
+    comments = db.relationship('Comment', backref='diary', lazy=True)
+    likes = db.relationship('Like', backref='diary', lazy=True)
+
+class Comment(db.Model):
+    comment_id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    diary_id = db.Column(db.Integer, db.ForeignKey('diary.diary_id'), nullable=False)
+
+class Like(db.Model):
+    like_id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    diary_id = db.Column(db.Integer, db.ForeignKey('diary.diary_id'), nullable=False)
+
+class Follower(db.Model):
+    follower_id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    follower_user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    following_user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+
+    follower = db.relationship('User', foreign_keys=[follower_user_id], back_populates='followers')
+    following = db.relationship('User', foreign_keys=[following_user_id], back_populates='following')
