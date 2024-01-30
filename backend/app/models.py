@@ -60,3 +60,34 @@ class Follower(db.Model):
 
     follower = db.relationship('User', foreign_keys=[follower_user_id], back_populates='followers')
     following = db.relationship('User', foreign_keys=[following_user_id], back_populates='following')
+
+
+# Marshmallow Schemas for Serialization
+class UserSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        exclude = ['password']
+
+class DiarySchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Diary
+
+class CommentSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Comment
+
+class LikeSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Like
+
+class FollowerSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Follower
+
+# Marshmallow schemas instances
+user_schema = UserSchema()
+diary_schema = DiarySchema()
+comment_schema = CommentSchema()
+like_schema = LikeSchema()
+follower_schema = FollowerSchema()
+
