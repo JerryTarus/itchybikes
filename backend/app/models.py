@@ -1,5 +1,6 @@
 from app import db, ma
-from flask_sqlalchemy_serializer import SQLAlchemyAutoSchema
+from flask_marshmallow import Marshmallow
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from flask_jwt_extended import get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -14,8 +15,8 @@ class User(db.Model):
     diaries = db.relationship('Diary', backref='author', lazy=True)
     comments = db.relationship('Comment', backref='author', lazy=True)
     likes = db.relationship('Like', backref='author', lazy=True)
-    followers = db.relationship('Follower', back_populates='follower', lazy=True, cascade="all, delete-orphan")
-    following = db.relationship('Follower', back_populates='following', lazy=True, cascade="all, delete-orphan")
+    followers = db.relationship('Follower', foreign_keys='Follower.follower_user_id', back_populates='follower', lazy=True, cascade="all, delete-orphan")
+    following = db.relationship('Follower', foreign_keys='Follower.following_user_id', back_populates='following', lazy=True, cascade="all, delete-orphan")
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -63,31 +64,36 @@ class Follower(db.Model):
 
 
 # Marshmallow Schemas for Serialization
-class UserSchema(SQLAlchemyAutoSchema):
+class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
+        load_instance = True
         exclude = ['password']
 
-class DiarySchema(SQLAlchemyAutoSchema):
+class DiarySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Diary
 
-class CommentSchema(SQLAlchemyAutoSchema):
+class CommentSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Comment
 
-class LikeSchema(SQLAlchemyAutoSchema):
+class LikeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Like
 
-class FollowerSchema(SQLAlchemyAutoSchema):
+class FollowerSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Follower
 
 # Marshmallow schemas instances
 user_schema = UserSchema()
+user_schemas = UserSchema(many=True)
 diary_schema = DiarySchema()
+diary_schemas = DiarySchema(many=True)
 comment_schema = CommentSchema()
+comment_schemas = CommentSchema()
 like_schema = LikeSchema()
+like_schemas = LikeSchema()
 follower_schema = FollowerSchema()
-
+follower_schemas = FollowerSchema()
