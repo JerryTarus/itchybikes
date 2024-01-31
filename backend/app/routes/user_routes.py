@@ -6,6 +6,13 @@ from app.models import user_schema, user_schemas
 
 user_routes = Blueprint('user_routes', __name__)
 
+user_bp = Blueprint('user', __name__)
+
+
+@user_bp.route('/profile')
+def profile():
+    return 'User Profile!'
+
 # Get all users
 @user_routes.route('/users', methods=['GET'])
 def get_all_users():

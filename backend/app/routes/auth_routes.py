@@ -4,6 +4,13 @@ from werkzeug.security import check_password_hash
 from app.models import User
 
 auth_routes = Blueprint('auth_routes', __name__)
+auth_bp = Blueprint('auth', __name__)
+
+
+@auth_bp.route('/hello')
+def hello():
+    return 'Welcome to Itchy Bikes'
+
 
 @auth_routes.route('/login', methods=['POST'])
 def login():
@@ -14,7 +21,7 @@ def login():
         access_token = create_access_token(identity=user.user_id)
         return jsonify(access_token=access_token), 200
     else:
-        return jsonify({"msg": "Invalid credentials"}), 401
+        return jsonify({"msg": "Oups!!! Invalid credentials"}), 401
 
 @auth_routes.route('/protected', methods=['GET'])
 @jwt_required()
