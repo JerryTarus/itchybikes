@@ -7,7 +7,7 @@ auth_routes = Blueprint('auth_routes', __name__)
 auth_bp = Blueprint('auth', __name__)
 
 
-@auth_bp.route('/hello')
+@auth_routes.route('/hello')
 def hello():
     return 'Welcome to Itchy Bikes'
 

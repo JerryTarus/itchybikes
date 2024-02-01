@@ -66,3 +66,10 @@ def delete_comment(comment_id):
 
     return jsonify({"msg": "Comment deleted successfully"}), 200
 
+
+
+# res = make_response(
+# jsonify(data), 200
+# )
+
+# return res

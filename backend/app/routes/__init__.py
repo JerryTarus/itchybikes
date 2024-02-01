@@ -25,24 +25,18 @@ def create_app():
     # Configuration
     app.config.from_object('config.Config')
 
-    # Initialize extensions
+    # Initializing the extensions
     db.init_app(app)
     jwt.init_app(app)
 
-    # Registering blueprints
-    # app.register_blueprint(auth_bp, url_prefix='/auth')
-    # app.register_blueprint(user_bp, url_prefix='/user')
-    # app.register_blueprint(diary_routes, url_prefix='/api')
-    # app.register_blueprint(comment_routes, url_prefix='/api')
-    # app.register_blueprint(like_routes, url_prefix='/api')
-    # app.register_blueprint(follower_routes, url_prefix='/api')
 
-    app.register_blueprint(auth_bp, url_prefix='auth')
-    app.register_blueprint(user_bp, url_prefix='user')
-    app.register_blueprint(diary_routes, url_prefix='api')
-    app.register_blueprint(comment_routes, url_prefix='api')
-    app.register_blueprint(like_routes, url_prefix='api')
-    app.register_blueprint(follower_routes, url_prefix='api')
+
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(user_bp, url_prefix='/user')
+    app.register_blueprint(diary_routes, url_prefix='/api')
+    app.register_blueprint(comment_routes, url_prefix='/api')
+    app.register_blueprint(like_routes, url_prefix='/api')
+    app.register_blueprint(follower_routes, url_prefix='/api')
 
 
 
@@ -51,7 +45,6 @@ def create_app():
 
     return app
 
-# Import the routes
 from .auth_routes import *
 from .user_routes import *
 from .diary_routes import *
