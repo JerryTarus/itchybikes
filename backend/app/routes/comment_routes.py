@@ -68,8 +68,3 @@ def delete_comment(comment_id):
 
 
 
-# res = make_response(
-# jsonify(data), 200
-# )
-
-# return res
