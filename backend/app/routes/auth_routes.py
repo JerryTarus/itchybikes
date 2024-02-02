@@ -1,4 +1,6 @@
+from app import db
 from flask import make_response
+
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -12,9 +14,13 @@ auth_bp = Blueprint('auth', __name__)
 
 CORS(auth_routes)
 
+# json encoder
+# app.json_encoder = json.JSONEncoder
+
 @auth_routes.route('/hello')
 def hello():
     return 'Welcome to Itchy Bikes'
+
 
 
 @auth_routes.route('/login', methods=['POST'])
@@ -25,12 +31,12 @@ def login():
 
     if user and check_password_hash(user.password, data['password']):
         access_token = create_access_token(identity=user.user_id)
-        print("Login successful for user:", user.user_id)
         return jsonify(access_token=access_token), 200
     else:
         print("Login failed for user:", data['email'])
         return jsonify({"msg": "Oups!!! Invalid credentials"}), 401
     
+
 @auth_routes.route('/login', methods=['OPTIONS'])
 def login_options():
     # Add appropriate CORS headers

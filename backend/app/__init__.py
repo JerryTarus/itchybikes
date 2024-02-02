@@ -31,8 +31,8 @@ def create_app(config_class=Config):
     # Initialize Flask extensions
     db.init_app(app)
     migrate.init_app(app, db)
-    CORS(app)
     api.init_app(app)
+    CORS(app)
     serializer.init_app(app)
     ma.init_app(app)
     jwt.init_app(app)
