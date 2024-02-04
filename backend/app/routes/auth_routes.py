@@ -39,7 +39,7 @@ def login():
 
 @auth_routes.route('/login', methods=['OPTIONS'])
 def login_options():
-    # Add appropriate CORS headers
+    
     response = make_response()
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Methods', 'POST')
@@ -61,7 +61,7 @@ def signup():
     # Create a new user
     new_user = User(username=data['username'], email=data['email'], password=generate_password_hash(data['password']))
     
-    # Add the new user to the database
+    # Add new user to the db
     db.session.add(new_user)
     db.session.commit()
     
