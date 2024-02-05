@@ -1,0 +1,121 @@
+/* Landing Page Section */
+.landing {
+  text-align: center;
+  padding: 100px 0;
+}
+
+.landing h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.landing p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+/* Diary Entry Section */
+.add-diary {
+  padding: 50px 0;
+  background-color: #f8f8f8;
+}
+
+.add-diary h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.add-diary label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.add-diary input,
+.add-diary textarea,
+.add-diary button {
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.add-diary button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-diary button:hover {
+  background-color: #0056b3;
+}
+
+/* Display Diaries Section */
+.diaries {
+  padding: 50px 0;
+}
+
+.diaries h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.diary-entry {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.diary-entry div {
+  flex: 1;
+  min-width: calc(50% - 10px);
+}
+
+.diary-entry h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.diary-entry p {
+  margin-bottom: 10px;
+}
+
+.diary-entry img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.comment-section {
+  margin-top: 20px;
+}
+
+.comment-section input {
+  width: calc(100% - 10px);
+  margin-bottom: 10px;
+}
+
+.comment-section button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.comment-section button:hover {
+  background-color: #0056b3;
+}
+
+.comment {
+  margin-bottom: 10px;
+}
+
+.comment button {
+  margin-right: 10px;
+}
+
