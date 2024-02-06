@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DiaryForm from './DiaryForm';
 
 const Home = () => {
   // State for handling diary input
@@ -13,7 +14,6 @@ const Home = () => {
   // State for comments and likes
   const [commentInput, setCommentInput] = useState('');
   const [diaryLikes, setDiaryLikes] = useState({});
-  const [diaryComments, setDiaryComments] = useState({});
 
   // Fetch diaries from the backend on component mount
   useEffect(() => {
@@ -34,7 +34,7 @@ const Home = () => {
   }, []);
 
   // Function to handle adding a new diary
-  const handleAddDiary = async () => {
+  const handleAddDiary = async (newDiary) => {
     try {
       // Check if the user is authenticated
       const accessToken = localStorage.getItem('accessToken');
@@ -57,9 +57,11 @@ const Home = () => {
         method: 'POST',
         mode: 'cors',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        body: formData,
+        // body: formData,
+        body: JSON.stringify(newDiary), // Change diaryData to newDiary
       });
 
       if (!response.ok) {
@@ -77,8 +79,9 @@ const Home = () => {
         throw new Error('Failed to fetch updated diaries');
       }
 
-      const updatedDiariesData = await updatedDiariesResponse.json();
-      setDiaries(updatedDiariesData);
+      // const updatedDiariesData = await updatedDiariesResponse.json();
+      // setDiaries(updatedDiariesData);
+      setDiaries((prevDiaries) => [...prevDiaries, newDiary]);
 
       // Reset input fields
       setDiaryTitle('');
@@ -184,7 +187,6 @@ const Home = () => {
       }));
     } catch (error) {
       console.error('Error liking or unliking diary:', error.message);
-
     }
   };
 
@@ -277,29 +279,14 @@ const Home = () => {
       {/* Landing Page Section */}
       <div>
         <h1>Welcome to Itchy Bikes Diary</h1>
-        <p>Explore and share your biking experiences with the community!</p>
+        <p>Document your biking experience and let others know your footprints...</p>
       </div>
 
       {/* Diary Entry Section */}
       <div>
         <h2>Add Diary</h2>
-        <div>
-          <label>Title:</label>
-          <input type="text" value={diaryTitle} onChange={(e) => setDiaryTitle(e.target.value)} />
-        </div>
-        <div>
-          <label>Summary:</label>
-          <textarea value={diarySummary} onChange={(e) => setDiarySummary(e.target.value)} />
-        </div>
-        <div>
-          <label>Date:</label>
-          <input type="date" value={diaryDate} onChange={(e) => setDiaryDate(e.target.value)} />
-        </div>
-        <div>
-          <label>Image:</label>
-          <input type="file" accept="image/*" onChange={(e) => setDiaryImage(e.target.files[0])} />
-        </div>
-        <button onClick={handleAddDiary}>Post Diary</button>
+        {/* DiaryForm component with handleAddDiary prop */}
+        <DiaryForm handleAddDiary={handleAddDiary} />
       </div>
 
       {/* Display Diaries Section */}
@@ -312,7 +299,7 @@ const Home = () => {
             <p>{diary.summary}</p>
             <p>{diary.date}</p>
             {diary.image && <img src={`http://localhost:5000/${diary.image}`} alt={`Diary ${index}`} />}
-            {/* Add comment and like functionality here */}
+            
             <div>
               {/* Comment input and button */}
               <input

@@ -26,7 +26,7 @@ def follow_user(user_id):
 
     return follower_schema.jsonify(new_follower), 201
 
-# Unfollow user
+# Unfollow a user
 @follower_routes.route('/users/<int:user_id>/unfollow', methods=['DELETE'])
 @jwt_required()
 def unfollow_user(user_id):
@@ -36,7 +36,7 @@ def unfollow_user(user_id):
     follower = Follower.query.filter_by(follower_user_id=follower_user_id, following_user_id=user_id).first()
 
     if not follower:
-        return jsonify({"msg": "Not following this user"}), 404
+        return jsonify({"msg": "You are not following this user"}), 404
 
     db.session.delete(follower)
     db.session.commit()

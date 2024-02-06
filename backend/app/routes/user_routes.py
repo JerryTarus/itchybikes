@@ -8,24 +8,24 @@ user_routes = Blueprint('user_routes', __name__)
 
 user_bp = Blueprint('user', __name__)
 
-# Testing this route
-@user_routes.route('/profile')
-def profile():
-    return 'This is a test User Profile!'
+# Testing route
+# @user_routes.route('/profile')
+# def profile():
+#     return 'This is a test User Profile!'
 
-# This gets all users
+# Get all users
 @user_routes.route('/users', methods=['GET'])
 def get_all_users():
     users = User.query.all()
     return jsonify(user_schemas.dump(users)), 200
 
-# Here we are trying to get a specific user's profile
+# Get a specific user's profile
 @user_routes.route('/users/<int:user_id>', methods=['GET'])
 def get_user_profile(user_id):
     user = User.query.get(user_id)
     return user_schema.jsonify(user), 200
 
-# Then Update the user's profile
+# Then update the user's profile
 @user_routes.route('/users/<int:user_id>', methods=['PATCH'])
 @jwt_required()
 def update_user_profile(user_id):

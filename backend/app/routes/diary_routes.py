@@ -18,7 +18,7 @@ def get_diary(diary_id):
     diary = Diary.query.get(diary_id)
     return diary_schema.jsonify(diary), 200
 
-# We create a new diary here
+# Create a new diary
 @diary_routes.route('/diaries', methods=['POST'])
 @jwt_required()
 def create_diary():
@@ -37,7 +37,7 @@ def create_diary():
     return diary_schema.jsonify(new_diary), 201
 
 
-# Update diary
+# Update a diary
 @diary_routes.route('/diaries/<int:diary_id>', methods=['PATCH'])
 @jwt_required()
 def update_diary(diary_id):
@@ -61,7 +61,7 @@ def update_diary(diary_id):
 
     return diary_schema.jsonify(diary), 200
 
-# Delete diary
+# Delete a diary
 @diary_routes.route('/diaries/<int:diary_id>', methods=['DELETE'])
 @jwt_required()
 def delete_diary(diary_id):

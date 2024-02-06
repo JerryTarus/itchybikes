@@ -6,13 +6,13 @@ from app.models import comment_schema, comment_schemas
 
 comment_routes = Blueprint('comment_routes', __name__)
 
-# Here we get all the comments for a specific diary
+# Comments for a specific diary
 @comment_routes.route('/diaries/<int:diary_id>/comments', methods=['GET'])
 def get_comments_for_diary(diary_id):
     comments = Comment.query.filter_by(diary_id=diary_id).all()
     return jsonify(comment_schemas.dump(comments)), 200
 
-# This section helps to create a new comment for a specific diary
+# Create a new comment for a specific diary
 @comment_routes.route('/diaries/<int:diary_id>/comments', methods=['POST'])
 @jwt_required()
 def create_comment(diary_id):
@@ -29,7 +29,7 @@ def create_comment(diary_id):
     return comment_schema.jsonify(new_comment), 201
 
 
-# Update comment
+# Update a comment
 @comment_routes.route('/comments/<int:comment_id>', methods=['PATCH'])
 @jwt_required()
 def update_comment(comment_id):
@@ -49,7 +49,7 @@ def update_comment(comment_id):
 
     return comment_schema.jsonify(comment), 200
 
-# Delete comment
+# Delete a comment
 @comment_routes.route('/comments/<int:comment_id>', methods=['DELETE'])
 @jwt_required()
 def delete_comment(comment_id):

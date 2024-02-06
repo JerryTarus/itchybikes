@@ -1,32 +1,45 @@
-// components/DiaryForm.js
 import React, { useState } from 'react';
 
-const DiaryForm = () => {
+const DiaryForm = ({ handleAddDiary }) => {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [summary, setSummary] = useState('');
   const [image, setImage] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Logic to send data to the server
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('date', date);
-    formData.append('summary', summary);
-    formData.append('image', image);
+    try {
+      // Call the prop function handleAddDiary with the diary data
+      await handleAddDiary({ title, date, summary, image });
 
-    fetch('http://localhost:5000/api/diaries', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-      
-        console.log('Diary created successfully:', data);
-      })
-      .catch((error) => console.error('Error creating diary:', error));
+      // Logic to send data to the server
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('date', date);
+      formData.append('summary', summary);
+      formData.append('image', image);
+
+      const response = await fetch('http://localhost:5000/api/diaries', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create diary');
+      }
+
+      const data = await response.json();
+      console.log('Diary created successfully:', data);
+
+      // Reset form fields after successfully adding the diary
+      setTitle('');
+      setDate('');
+      setSummary('');
+      setImage(null);
+    } catch (error) {
+      console.error('Error creating diary:', error);
+    }
   };
 
   return (
